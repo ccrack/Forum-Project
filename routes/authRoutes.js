@@ -26,7 +26,7 @@ router.post('/login', async (req, res) => {
 
     //sign token
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
-
+    console.log(user._id)
     res.json({ message: "Login successful", token });
 
 });
@@ -46,6 +46,18 @@ router.post('/register', async (req, res) => {
 
     await user.save();
     res.json({ message: 'user registered' });
+});
+
+// Create question
+router.post('/questions', async (req, res) => {
+    const { title, body } = req.body
+    const question = new Question({
+        title: title,
+        body: body,
+        author: req.user._id
+    });
+    await question.save();
+    res.json(question);
 });
 
 module.exports = router;
