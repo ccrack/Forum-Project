@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import API from '../../services/api';
-import './Login.css'
+import Register from '../account/Register';
+import './Login.css';
 
 export default function Login({ setUser }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [showRegister, setShowRegister] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -13,15 +15,18 @@ export default function Login({ setUser }) {
             const res = await API.post('users/login', { username, password });
             localStorage.setItem('token', res.data.token);
 
-             
+
             setUser({ username });
         } catch (err) {
             setError(err.response?.data?.error || 'Login failed');
         }
     };
+    if (showRegister) {
+        return <Register onRegisterSuccess={() => setShowRegister(false)} />;
+    }
 
     return (
-        <div className='login-container'> 
+        <div className='login-container'>
             <h2>Login</h2>
             <form className='form' onSubmit={handleLogin}>
                 <input
@@ -41,6 +46,10 @@ export default function Login({ setUser }) {
                 <button className='btn btn-primary' type="submit">Login</button>
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
+            <p>
+                Don’t have an account?{" "}
+                <a href='#' onClick={() => setShowRegister(true)}>Register</a>
+            </p>
         </div>
     );
 }
