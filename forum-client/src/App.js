@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect, use } from 'react';
+import Login from './pages/account/Login';
+import API from '../src/services/api';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
+ const [user, setUser] = useState(null);
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='container'>
+      <h1>Forum App</h1>
+      {user ? (
+        <div>
+          <p>Welcome, {user.username}</p>
+          <button onClick={logout}>Logout</button>
+          
+        </div>
+      ) : (
+        <Login setUser={setUser} />
+      )}
     </div>
   );
 }
-
 export default App;
