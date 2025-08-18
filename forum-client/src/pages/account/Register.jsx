@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import {Link, useNavigate } from 'react-router-dom';
 import API from '../../services/api';
 import './Register.css'
 
-export default function Register({ onRegisterSuccess }) {
+export default function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -10,6 +11,7 @@ export default function Register({ onRegisterSuccess }) {
     const [firstName, setFirstname] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -17,7 +19,7 @@ export default function Register({ onRegisterSuccess }) {
             await API.post('/users/register', { username, password, email, lastName, firstName });
             setSuccess('Registration successful! You can now log in.');
             setError('');
-            onRegisterSuccess(); // navigate back to login
+            navigate('/login'); // redirect after success
         } catch (err) {
             setError(err.response?.data?.error || 'Registration failed');
             setSuccess('');
@@ -68,6 +70,9 @@ export default function Register({ onRegisterSuccess }) {
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
+            <p>
+                Already have an account? <Link to="/login">Login</Link>
+            </p>
         </div>
     );
 }

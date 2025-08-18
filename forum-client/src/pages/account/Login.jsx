@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import API from '../../services/api';
-import Register from '../account/Register';
+import Register from './Register';
+import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 
 export default function Login({ setUser }) {
@@ -8,15 +9,15 @@ export default function Login({ setUser }) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [showRegister, setShowRegister] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
             const res = await API.post('users/login', { username, password });
             localStorage.setItem('token', res.data.token);
-
-
             setUser({ username });
+            navigate('/dashboard'); // go to dashboard after login
         } catch (err) {
             setError(err.response?.data?.error || 'Login failed');
         }
@@ -47,8 +48,7 @@ export default function Login({ setUser }) {
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <p>
-                Don’t have an account?{" "}
-                <a href='#' onClick={() => setShowRegister(true)}>Register</a>
+                Don’t have an account? <Link to="/register">Register</Link>
             </p>
         </div>
     );

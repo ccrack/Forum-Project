@@ -1,29 +1,31 @@
-import React, { useState, useEffect, use } from 'react';
+import React, { useState } from 'react';
 import Login from './pages/account/Login';
-import API from '../src/services/api';
+import Register from './pages/account/Register';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Dashboard from './pages/account/Dashboard';
 
 function App() {
- const [user, setUser] = useState(null);
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
-  };
+  const [user, setUser] = useState(null);
 
   return (
-    <div className='container'>
-      <h1>Forum App</h1>
-      {user ? (
-        <div>
-          <p>Welcome, {user.username}</p>
-          <button onClick={logout}>Logout</button>
-          
-        </div>
-      ) : (
-        <Login setUser={setUser} />
-      )}
-    </div>
+    <Router>
+      <Routes>
+        {/* Login route */}
+        <Route path="/login" element={<Login setUser={setUser} />} />
+
+        {/* Register route */}
+        <Route path="/register" element={<Register />} />
+
+        <Route
+          path="/dashboard"
+          element={user ? <Dashboard user={user} setUser={setUser}/> : <Navigate to="/dashboard" />}
+        />
+
+        {/* Default route */}
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    </Router>
   );
 }
 export default App;
