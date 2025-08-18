@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 // refference to models object
-const Question = require('../models/questions');
 const Users = require('../models/users');
 
 
@@ -46,18 +45,6 @@ router.post('/register', async (req, res) => {
 
     await user.save();
     res.json({ message: 'user registered' });
-});
-
-// Create question
-router.post('/questions', async (req, res) => {
-    const { title, body } = req.body
-    const question = new Question({
-        title: title,
-        body: body,
-        author: req.user._id
-    });
-    await question.save();
-    res.json(question);
 });
 
 module.exports = router;

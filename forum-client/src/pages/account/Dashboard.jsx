@@ -9,9 +9,9 @@ export default function Dashboard({ user, setUser }) {
         // setUser(null);
         navigate('/login');// go to login
     };
+
     return (
         <div>
-
             <nav className="navbar bg-dark navbar-expand-lg" data-bs-theme="dark">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="#">Forum app</a>
@@ -29,16 +29,11 @@ export default function Dashboard({ user, setUser }) {
                     </ul>
                 </div>
             </nav>
-
-
-            <div className='container-fluid'>
-
-                hello dashboard...
-
-            </div>
-
+          
+          <div>
+            welcome to your dashboard...
+          </div>
         </div>
-
-
+        
     );
 }
