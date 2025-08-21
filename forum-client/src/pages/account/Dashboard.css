@@ -1,0 +1,13 @@
+.main{
+    margin-top: 10vh;
+}
+.cat-tittle{
+    text-align: center;
+}
+
+ul li{
+    list-style: none;
+}
+.questions-container a{
+    margin-bottom: 10px;
+}
