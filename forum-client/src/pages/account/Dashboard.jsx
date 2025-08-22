@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import API from '../../services/api';
+import QuestionList from '../../components/QuestionList';
 
 export default function Dashboard({ user, setUser }) {
 
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [questions, setQuestions] = useState([]);
 
     // list of category framework
     const frontendFrameworkList = [
@@ -31,6 +33,15 @@ export default function Dashboard({ user, setUser }) {
     // select value
     const handleSelect = (value) => {
         setSelectedCategory(value);
+    };
+
+    // handle question by categories
+    const handleCategoryClick = (categoryQ) => {
+        API.get(`/questions/search/${categoryQ}`)
+            .then(res => {
+                 setQuestions(res.data.questions)
+            })
+            .catch(err => console.error(err));
     };
 
     return (
@@ -63,8 +74,12 @@ export default function Dashboard({ user, setUser }) {
                                 <li className="list-group-item list-group-item-secondary list-group-item-action active">Frontend Framework List</li>
                                 {
                                     frontendFrameworkList.map((f, i) => (
-                                        <li key={i}>
-                                            <a href='#' className="list-group-item list-group-item-action" onClick={() => handleSelect(f)}>
+                                        <li key={i} >
+                                            <a key={i} href='#' className="list-group-item list-group-item-action" onClick={(e) => {
+                                                const categoryText = e.target.textContent;
+                                                handleSelect(f);
+                                                handleCategoryClick(categoryText);
+                                            }}>
                                                 {f}
                                             </a>
                                         </li>
@@ -83,11 +98,7 @@ export default function Dashboard({ user, setUser }) {
                             {selectedCategory ? (
                                 <div className='questions-container'>
                                     <a href='#' className='btn btn-success'>Ask new question</a>
-                                    <div className="card p-3 shadow-sm">
-                                        <h6 className="mb-2">Javascript modal... <span>create at: 02/06/2025</span><span className="badge text-bg-secondary rounded">14</span></h6>
-                                        <p>whitch is the best way to create modal?{selectedCategory} </p>
-                                    </div>
-
+                                    <QuestionList questions={questions} onSelect={null} />
                                 </div>
 
                             ) : (

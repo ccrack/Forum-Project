@@ -2,16 +2,25 @@ import React from "react";
 
 function QuestionItem({ question, onSelect }) {
     return (
-        <div className="question">
-            <div className="meta">
-                <a href="#" onClick={() => onSelect(question)}>
-                    {question.tittle}
-                </a>
-                {new Date(question.createdAt).toLocaleString()} &nbsp; by:{""}
-                {question.author?.username || "Unknown"}
-                &nbsp; {question.answers?.length || 0} Answers
+        <div className="d-flex justify-content-between align-items-center border-bottom py-3">
+            {/* Left side: Title and username */}
+            <div>
+                <h6 className="mb-1">{question.title}</h6>
+                <small className="text-success">by : {question.author?.username || "Unknown"}</small>
+            </div>
+
+            {/* Right side: Answers & date */}
+            <div className="text-end">
+                <div>
+                    <span bg="success" className="me-1">
+                        {question.answers?.length || 0}
+                    </span>
+                    Answers
+                </div>
+                <small className="text-muted">{question.createAt}</small>
             </div>
         </div>
+
     );
 }
 export default QuestionItem;

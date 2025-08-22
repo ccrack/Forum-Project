@@ -24,6 +24,20 @@ router.post('/create', async (req, res) => {
     res.json(question);
 });
 
+// get question by categories
+router.get("/search/:category", async (req, res) => {
+    try {
+        const { category } = req.params;
+        const questions = await Question.find({ category })
+            .populate("author", "username") // only username from author
+            .populate("answers.author", "username") // same for answers
+            .sort({ createAt: -1 }); // latest first
+        res.json({ category, questions });
+    } catch (err) {
+        res.status(500).json({ error: "Failed to fetch questions" });
+    }
+});
+
 // Answer question
 router.post('/answers/:id/answers', async (req, res) => {
     const question = await Question.findById(req.params.id);

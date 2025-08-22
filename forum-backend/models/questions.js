@@ -9,7 +9,8 @@ const questionSchema = new mongoose.Schema({
     answers: [
         {
             body: String,
-            author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+            author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+            createAt: { type: Date, default: Date.now },
         }
     ]
 });
