@@ -15,7 +15,7 @@ export default function Login({ setUser }) {
         e.preventDefault();
         try {
             const res = await API.post('users/login', { username, password });
-            
+            localStorage.setItem('token', res.data.token);
             setUser({ username });
             navigate('/dashboard'); // go to dashboard after login
         } catch (err) {

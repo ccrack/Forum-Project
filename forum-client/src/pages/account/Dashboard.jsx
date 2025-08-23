@@ -4,6 +4,7 @@ import './Dashboard.css';
 import API from '../../services/api';
 import QuestionList from '../../components/QuestionList';
 import NewQuestionForm from '../../components/NewQuestionForm';
+import QuestionContent from '../../components/QuestionContent';
 
 
 export default function Dashboard({ user, setUser }) {
@@ -11,6 +12,7 @@ export default function Dashboard({ user, setUser }) {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [questions, setQuestions] = useState([]);
     const [showNewQuestionForm, setShowNewQuestionForm] = useState(false);
+    const [showQuestionContent, setShowQuesionContent] = useState(false);
 
     // list of category framework
     const frontendFrameworkList = [
@@ -112,13 +114,18 @@ export default function Dashboard({ user, setUser }) {
                                         }
                                     </a>
                                     {showNewQuestionForm && (
-                                        <NewQuestionForm 
-                                            user={user}
-                                            category={selectedCategory}
-                                            onSuccess={addQuestion}
-                                        />
+                                        <div>
+                                            <NewQuestionForm
+                                                user={user}
+                                                category={selectedCategory}
+                                                onSuccess={addQuestion}
+                                            />
+
+                                        </div>
+
                                     )}
-                                    <QuestionList questions={questions} onSelect={null} />
+                                    <QuestionList questions={questions} />
+                                     
                                 </div>
 
                             ) : (
@@ -127,7 +134,6 @@ export default function Dashboard({ user, setUser }) {
                         </section>
 
                     </div>
-
                 </div>
             </div>
         </div>
