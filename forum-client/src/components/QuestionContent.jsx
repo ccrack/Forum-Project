@@ -1,17 +1,46 @@
 import { React, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import API from "../services/api";
 
 export default function QuestionContent({ question }) {
 
 
     // Show answers progressively
     const pageSize = 5;
+
+    const [body, setBody] = useState("");
+    const [show, setShow] = useState(false);
+
+
+    const handleOpen = () => setShow(true);
+    const handleClose = () => setShow(false);
+
     const [visibleAnswers, setVisibleAnswers] = useState(
         question.answers?.slice(0, pageSize) || []
     );
     const [hasMore, setHasMore] = useState(
         question.answers?.length > pageSize
     );
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('token');
+        try {
+            const res = await API.post(
+                `/questions/answers/${question._id}/answers`,
+                { body },
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                }
+            );
+            // onSucess(res.data); // update answers in parent
+            setBody("");
+            handleClose();
+        } catch (err) {
+            console.error("Error creating answer:", err);
+        }
+    };
+
 
     // Load more answers
     const fetchMoreAnswers = () => {
@@ -40,13 +69,51 @@ export default function QuestionContent({ question }) {
                                 {question.author?.username || "Unknown"}
                             </span>
                         </small>
-                        <small className="text-muted">
+
+                        <small className="text-muted d-flex flex-column">
+
                             {question.createAt}
+
                         </small>
                     </div>
 
                     {/* Question description/content */}
-                    <p className="card-text">{question.body}</p>
+                    <div className="d-flex flex-row">
+                        <p className="card-text">{question.body}</p>
+                        <div className="container mt-5">
+
+                            {/* Modal */}
+                            {show && (
+                                <div className="modal show d-block" tabIndex="-1" role="dialog">
+                                    <div className="modal-dialog modal-dialog-centered" role="document">
+                                        <div className="modal-content">
+                                            <div className="modal-header">
+                                                <h5 className="modal-title">Answer the Question</h5>
+                                                <button type="button" className="btn-close" onClick={handleClose}></button>
+                                            </div>
+                                            <div className="modal-body">
+                                                <form onSubmit={handleSubmit}>
+                                                    <div className="mb-3">
+                                                        <label htmlFor="answer" className="form-label">Your Answer</label>
+                                                        <textarea
+                                                            id="answer"
+                                                            className="form-control"
+                                                            value={body}
+                                                            onChange={(e) => setBody(e.target.value)}
+                                                            rows="4"
+                                                            required
+                                                        ></textarea>
+                                                    </div>
+                                                    <button type="submit" className="btn btn-success">Submit Answer</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <button className="btn btn-primary btn-sm" onClick={handleOpen}>Answer Question</button>
                 </div>
             </div>
 
