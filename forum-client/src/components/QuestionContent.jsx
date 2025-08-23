@@ -28,6 +28,31 @@ export default function QuestionContent({ question }) {
                     <p className="card-text">{question.body}</p>
                 </div>
             </div>
+
+            {/* Answers section */}
+            <div className="mt-4">
+                <h5 className="mb-3">
+                    {question.answers?.length || 0} Answers
+                </h5>
+                {question.answers && question.answers.length > 0 ? (
+                    <ul className="list-group">
+                        {question.answers.map((ans, i) => (
+                            <li key={i} className="list-group-item">
+                                <div className="d-flex justify-content-between">
+                                    <span>{ans.body}</span>
+                                    <small className="text-muted">
+                                        username
+                                    </small>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <div className="alert alert-info">
+                        No answers yet.
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
