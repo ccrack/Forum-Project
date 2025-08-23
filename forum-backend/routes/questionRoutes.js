@@ -9,15 +9,14 @@ router.get('/search', async (req, res) => {
     res.json(questions);
 });
 
-
 // Create question
 router.post('/create', async (req, res) => {
-    const { title, body, category } = req.body
+    const { title, body, category} = req.body
     const question = new Question({
         title: title,
         body: body,
         category: category,
-        author: req.user._id,
+        author: res.user.id,
         answer: null
     });
     await question.save();

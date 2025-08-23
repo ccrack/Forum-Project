@@ -1,13 +1,16 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, use } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import API from '../../services/api';
 import QuestionList from '../../components/QuestionList';
+import NewQuestionForm from '../../components/NewQuestionForm';
+
 
 export default function Dashboard({ user, setUser }) {
 
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [questions, setQuestions] = useState([]);
+    const [showNewQuestionForm, setShowNewQuestionForm] = useState(false);
 
     // list of category framework
     const frontendFrameworkList = [
@@ -39,9 +42,14 @@ export default function Dashboard({ user, setUser }) {
     const handleCategoryClick = (categoryQ) => {
         API.get(`/questions/search/${categoryQ}`)
             .then(res => {
-                 setQuestions(res.data.questions)
+                setQuestions(res.data.questions)
             })
             .catch(err => console.error(err));
+    };
+
+    const addQuestion = (newQuestion) => {
+        setQuestions((prev) => [...prev, newQuestion]);
+        setShowNewQuestionForm(false);
     };
 
     return (
@@ -77,6 +85,7 @@ export default function Dashboard({ user, setUser }) {
                                         <li key={i} >
                                             <a key={i} href='#' className="list-group-item list-group-item-action" onClick={(e) => {
                                                 const categoryText = e.target.textContent;
+                                                setShowNewQuestionForm(false);
                                                 handleSelect(f);
                                                 handleCategoryClick(categoryText);
                                             }}>
@@ -97,7 +106,18 @@ export default function Dashboard({ user, setUser }) {
                         <section className="content">
                             {selectedCategory ? (
                                 <div className='questions-container'>
-                                    <a href='#' className='btn btn-success'>Ask new question</a>
+                                    <a href='#' className='btn btn-success' onClick={() => setShowNewQuestionForm((prev) => !prev)}>
+                                        {
+                                            !showNewQuestionForm ? "Ask new question" : "Cancel question"
+                                        }
+                                    </a>
+                                    {showNewQuestionForm && (
+                                        <NewQuestionForm 
+                                            user={user}
+                                            category={selectedCategory}
+                                            onSuccess={addQuestion}
+                                        />
+                                    )}
                                     <QuestionList questions={questions} onSelect={null} />
                                 </div>
 
