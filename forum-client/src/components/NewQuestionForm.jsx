@@ -7,7 +7,20 @@ export default function NewQuestionForm({ user, category, onSuccess }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("text form")
+        const token = localStorage.getItem('token');
+        
+        try {
+            const res = await API.post("/questions/create", { title, body, category },
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+            let message = onSuccess(res.data);
+            console.log(message)
+            setTitle("");
+            setBody("");
+        } catch (err) {
+            console.error("Error creating question:", err.response);
+        }
     };
 
     return (
@@ -27,7 +40,7 @@ export default function NewQuestionForm({ user, category, onSuccess }) {
                 onChange={(e) => setBody(e.target.value)}
                 required
             />
-            <button  className="btn btn-primary mt-3" type="submit">Submit</button>
+            <button className="btn btn-primary mt-3" type="submit">Submit</button>
         </form>
     );
 }
