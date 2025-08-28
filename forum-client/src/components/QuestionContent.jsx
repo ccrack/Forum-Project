@@ -50,17 +50,6 @@ export default function QuestionContent({ question }) {
         setVisibleAnswers(newAnswers);
         setHasMore(newAnswers.length < question.answers.length);
     };
-    
-    // function that verify if content is question
-   const ensureQuestion = (content) =>{
-        content = content.trim(); // remove extra spaces
-        if (content.endsWith("?")) {
-            return content;
-        } else {
-            return content + "?";
-        }
-    }
-
 
     return (
         <div className="container mt-4">
@@ -150,7 +139,7 @@ export default function QuestionContent({ question }) {
                                     <div className="d-flex justify-content-between">
                                         <span>{ans.body}</span>
                                         <small className="text-muted">
-                                            username
+                                            {ans.author.username}
                                         </small>
                                     </div>
                                 </li>
