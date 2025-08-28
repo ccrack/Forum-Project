@@ -50,6 +50,16 @@ export default function QuestionContent({ question }) {
         setVisibleAnswers(newAnswers);
         setHasMore(newAnswers.length < question.answers.length);
     };
+    
+    // function that verify if content is question
+   const ensureQuestion = (content) =>{
+        content = content.trim(); // remove extra spaces
+        if (content.endsWith("?")) {
+            return content;
+        } else {
+            return content + "?";
+        }
+    }
 
 
     return (

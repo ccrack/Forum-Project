@@ -7,10 +7,13 @@ export default function NewQuestionForm({ user, category, onSuccess }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // ✅ Ensure the title ends with a question mark
+        const fixedBody = ensureQuestion(body);
+
         const token = localStorage.getItem('token');
-        
         try {
-            const res = await API.post("/questions/create", { title, body, category },
+            const res = await API.post("/questions/create", { title, body:fixedBody, category },
                 {
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -22,6 +25,15 @@ export default function NewQuestionForm({ user, category, onSuccess }) {
             console.error("Error creating question:", err.response);
         }
     };
+    // function that verify if content is question
+    const ensureQuestion = (content) => {
+        content = content.trim(); // remove extra spaces
+        if (content.endsWith("?")) {
+            return content;
+        } else {
+            return content + "?";
+        }
+    }
 
     return (
         <form onSubmit={handleSubmit} className="form">
