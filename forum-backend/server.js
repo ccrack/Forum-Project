@@ -30,7 +30,7 @@ app.use('/api/users', userRouter);
 // Serve React frontend
 app.use(express.static(path.join(__dirname, "../forum-client/build")));
 app.get("/index", (req, res) => {
-  res.sendFile(path.join(__dirname, "../froum-client/build", "index.html"));
+  res.sendFile(path.join(__dirname, "../forum-client/build", "index.html"));
 });
 
 
