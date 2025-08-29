@@ -27,6 +27,12 @@ app.get('/', (req, res) => {
 app.use('/api/questions', questionRouter);
 app.use('/api/users', userRouter);
 
+// Serve React frontend
+app.use(express.static(path.join(__dirname, "../client/build")));
+app.get("/index", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
