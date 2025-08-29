@@ -33,6 +33,7 @@ export default function QuestionContent({ question }) {
                     headers: { Authorization: `Bearer ${token}` }
                 }
             );
+            
             // onSucess(res.data); // update answers in parent
             setBody("");
             handleClose();
