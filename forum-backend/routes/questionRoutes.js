@@ -67,7 +67,7 @@ router.get("/search/:category", async (req, res) => {
 });
 
 // Answer question
-router.post('/answers/:id/answers', auth, async (req, res) => {
+router.post('/:id/answers', auth, async (req, res) => {
     const question = await Question.findById(req.params.id);
     console.log(req.params.id)
     question.answers.push({ body: req.body.body, author: req.user.id });

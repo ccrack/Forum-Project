@@ -27,7 +27,7 @@ export default function QuestionContent({ question }) {
         const token = localStorage.getItem('token');
         try {
             const res = await API.post(
-                `/questions/answers/${question._id}/answers`,
+                `/questions/${question._id}/answers`,
                 { body },
                 {
                     headers: { Authorization: `Bearer ${token}` }
