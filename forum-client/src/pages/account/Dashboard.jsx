@@ -31,7 +31,7 @@ export default function Dashboard({ user, setUser }) {
     const logout = () => {
         localStorage.removeItem('token');
         // setUser(null);
-        navigate('/login');// go to login
+        navigate('/');// go to login
     };
 
 
